@@ -1,0 +1,59 @@
+## Publishing a JDK to Maven
+
+Following changes to the JDK, an updated version needs to be built and published to a Maven mirror. The steps to perform this involve:
+
+1. List the available tags on the 'main' JDK branch  
+    `git tag`
+    
+2. Add and push a new tag, incrementing the latest minor version by 1, or the latest major version by 1 if there is a breaking change.  
+    `git tag -a version=x.y.z -m "Updated to version x.y.z"`  
+    `git push --tags`
+    
+3. Add the following block to _~/.m2/settings.xml_
+    
+    ```
+    <servers>
+      <server>
+        <id>some-maven-proxy</id>
+        <configuration>
+          <httpHeaders>
+            <property>
+              <name>Private-Token</name>
+              <value>${env.PAT_TOKEN}</value>
+            </property>
+          </httpHeaders>
+        </configuration>
+      </server>
+    </servers>
+    <mirrors>
+      <mirror>
+       <id>gitlab-maven</id>
+       <url>https://server/api/v4/projects/~/packages/maven/</url>
+       <mirrorOf>central</mirrorOf>
+      </mirror>
+    </mirrors>
+    ```
+    
+4. Add the following block to the POM of the project you want to publish:
+	Note: ensure here repository id matches with the last step
+    
+    ```
+    <distributionManagement>
+        <repository>
+            <id>some-maven-proxy</id>    
+            <url>https://server/api/v4/projects/~/packages/maven/</url>
+        </repository>
+        <snapshotRepository>
+            <id>gitlab-maven</id>
+            <url>https://server/api/v4/projects/~/packages/maven/</url>
+        </snapshotRepository>
+    </distributionManagement>
+    ```
+    
+5. From the CLI within the root of the project you want to publish, run the following command:  
+    `export TOKEN=<token>`
+    
+6. Then run:  
+    `mvn deploy -Drevision=<semver-version>`
+    
+    Where `<semver-version>` is the version number you want to publish which matches the tag you added in step 1, **minus** the _'version='_ prefix. Eg, 1.4.0
