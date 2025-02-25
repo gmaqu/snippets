@@ -1,0 +1,8 @@
+#! /bin/bash
+
+# To push applications images built into a local Docker Registry into an AWS ECR
+
+# source <(bind-version) && ; if running for the first time
+build && docker image pull localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG}
+docker tag localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG} ${TARGET_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${COMPONENT_NAME}:${DOCKER_TAG}
+docker push "${TARGET_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${COMPONENT_NAME}:${DOCKER_TAG}"
