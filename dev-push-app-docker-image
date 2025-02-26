@@ -2,25 +2,35 @@
 
 # To push applications images built into a local Docker Registry into an AWS ECR
 
-if [! "${DOCKER_TAG}"];
-  echo -e "\e[31m[SCRIPT] ERROR: DOCKER_TAG has not been set. Received: $DOCKER_TAG \e[0m"
+# derive component from path
+COMPONENT_NAME=${PWD##*/}
+
+if [[ -z "${DOCKER_TAG}" ]]; then
+  echo -e "\e[31m[SCRIPT] ERROR: DOCKER_TAG has not been set. Received: "${DOCKER_TAG}" \e[0m"
+  exit 1
 fi
-if [! "${COMPONENT_NAME}"];
-  echo -e "\e[31m[SCRIPT] ERROR: COMPONENT_NAME has not been set. Received: $COMPONENT_NAME \e[0m"
+
+if [[ -z "${COMPONENT_NAME}" ]]; then
+  echo -e "\e[31m[SCRIPT] ERROR: COMPONENT_NAME has not been set. Received: "${COMPONENT_NAME}" \e[0m"
+  exit 1
 fi
-if [! "${TARGET_ACCOUNT}"];
-  echo -e "\e[31m[SCRIPT] ERROR: TARGET_ACCOUNT has not been set. Received: $TARGET_ACCOUNT \e[0m"
+
+if [[ -z "${TARGET_ACCOUNT}" ]]; then
+  echo -e "\e[31m[SCRIPT] ERROR: TARGET_ACCOUNT has not been set. Received: "${TARGET_ACCOUNT}" \e[0m"
+  exit 1
 fi
 
 # Authenticate
 aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${TARGET_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com
 
 # Build & prep custom Docker image
-build
-docker image pull localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG} 
-docker tag localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG} ${TARGET_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${COMPONENT_NAME}:${DOCKER_TAG}
+#build
+#docker image pull localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG}
+#docker tag localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG} ${TARGET_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${COMPONENT_NAME}:${DOCKER_TAG}
 docker push "${TARGET_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${COMPONENT_NAME}:${DOCKER_TAG}"
 
 # ; to remove images from local private docker registry
 # docker exec -it 8e221220d262 sh
 # rm -rf var/lib/registry/docker/registry/v2/repositories/${COMPONENT_NAME}/
+
+echo -e echo -e "\e[32m[SCRIPT] SUCCESS: Image pushed with tag "${DOCKER_TAG}"\e[0m"
