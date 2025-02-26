@@ -5,7 +5,7 @@
 # source <(bind-version) && ; if running for the first time
 
 # derive component from path
-COMPONENT=${PWD##*/}
+COMPONENT_NAME=${PWD##*/}
 
 build && docker image pull "localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG}" &&
 docker tag "localhost:5000/${COMPONENT_NAME}:${DOCKER_TAG}" "${TARGET_ACCOUNT}.dkr.ecr.eu-west-2.amazonaws.com/${COMPONENT_NAME}:${DOCKER_TAG}" &&
