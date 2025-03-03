@@ -1,4 +1,6 @@
 # cat ~/.aliases 
+# CTRL+r for recorded bash_history for recent command search
+
 alias gpsn='git push --set-upstream origin fix/remove-checkstyle'
 alias cleanup='gbr -D $(git branch --no-color | grep -E "fix|feature")'
 alias update='gfap && echo -e "\e[32mStashing any active changes on branch...\e[0m" && git stash save && git pull --force'
