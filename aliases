@@ -1,0 +1,60 @@
+# cat ~/.aliases 
+alias gpsn='git push --set-upstream origin fix/remove-checkstyle'
+alias cleanup='gbr -D $(git branch --no-color | grep -E "fix|feature")'
+alias update='gfap && echo -e "\e[32mStashing any active changes on branch...\e[0m" && git stash save && git pull --force'
+alias submodule='git submodule update --init --recursive --remote'
+alias history='fc -l -50 | sed '1,8d' '
+alias checkcdk='lint && jest && lint-cfn'
+alias codeartifact='aws codeartifact login --tool npm --repository devops --domain newan --domain-owner <ACCOUNT_ID> --region eu-west-2'
+alias ca='git commit --amend --author="... <...@x.com>" --no-edit'
+alias gplf='git pull --ff-only'
+alias grfb='git checkout main && git branch --no-abbrev --no-color --no-column | grep -v main | xargs git branch -D'
+
+
+alias .l='source ~/.aliases'
+alias .s='alias -L >~/.aliases && alias -L -s >>~/.aliases && alias -L -g >>~/.aliases'
+alias g=git
+alias h=helm
+alias k=kubectl
+alias mk="minikube kubectl --"
+alias l=ls
+alias gl3='git log -n 3'
+alias ga='git add'
+alias gbr='git branch'
+alias gci='git commit'
+alias gca='git commit --amend'
+alias gco='git checkout'
+alias gd='git diff'
+alias gdh='git diff --ignore-all-space HEAD'
+alias gr='git restore'
+alias gf='git fetch'
+alias gfap='git fetch --all --prune'
+alias gg='git graph'
+alias gg10='gg -n10'
+alias gg20='gg -n20'
+alias gg7='git graph -n7'
+alias gga='gg --all'
+alias ggg='((LN=$LINES*2/3)); gg -n $LN'
+alias ggga='ggg --all'
+alias globurl='noglob urlglobber '
+alias gm='git merge'
+alias gnp='git --no-pager'
+alias gpl='git pull'
+alias gps='git push'
+alias gpsf='git push -f'
+alias grep='grep --color=auto'
+alias gs='git status --short'
+alias sp='stash pop'
+alias gss='git status'
+alias gsu='git stash -u'
+
+alias ls='ls --color -xF'
+alias ll='ls -l'
+alias lsa='ls -A'
+alias lla='ll -A'
+
+alias ..='cd ..'
+alias ...='cd ../../'
+alias -g ....=../../..
+alias -g .....=../../../..
+alias -g ......=../../../../..
