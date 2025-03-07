@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Script Name: fetch_pod_security_contexts.sh
+# Description: This script retrieves the security context of all containers in 
+#              all pods across all namespaces in a Kubernetes cluster.
+# Usage:       Run this script in an environment with kubectl configured and
+#              access to the cluster.
+# Example:     ./fetch_pod_security_contexts.sh
+# Author:      Grace Quinn
+# Date:        07/03/2025
+
+
+# Fetch all pods in all namespaces without headers
+kubectl get pods -A --no-headers | awk '{print $2","$1}' | while IFS=',' read -r pod namespace; do
+  # Display the pod name and namespace
+  echo -e "\nSecurity context for Pod: $pod in Namespace: $namespace"
+  
+  # Get and display the security context of the pod's containers
+  kubectl get pod "$pod" -n "$namespace" -o jsonpath="{.spec.containers[*].securityContext}"
+  
+  # Add a new line for better readability
+  echo -e "\n"
+done
