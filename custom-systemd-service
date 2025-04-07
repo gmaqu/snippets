@@ -1,0 +1,27 @@
+# Setting up a custom systemd .service inside WSL2 to output logs with \n every 10 seconds
+wsl -l -v
+# NOTE: WSL2 doesn’t support systemd by default
+cat /etc/wsl.conf
+echo -e "[boot]\nsystemd=true" >> /etc/wsl.conf
+wsl --shutdown -d newan
+# Check systemd is up
+ps aux
+ps -p 1 -o comm=
+# Start a new Custom service
+Sudo tee /etc/systemd/system/fb-test.service > /dev/null << EOF
+[Unit]
+Description=Fluent Bit test service
+[Service]
+ExecStart=/usr/bin/bash -c 'while true; do echo -e "Line 1\nLine2\nLine 3"; sleep 10; done'
+StandardOutput=journal
+Restart=always
+EOF
+
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl start fb-test.service
+sudo systemctl status fb-test.service
+sudo systemctl list-units --type=service --state=running
+
+# Check test service logs to journald
+sudo journalctl -u fb-test.service -o json
