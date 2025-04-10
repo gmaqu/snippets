@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Script to disable fb-test.service and remove systemd from WSL2 environment
+
+sudo systemctl stop fb-test.service
+sudo rm -rf /etc/systemd/system/fb-test.service
+sudo systemctl status fb-test.service
+
+# Undo systemd startup in WSL
+# vim /etc/wsl.conf
+
+# [boot]
+# systemd=false
+
+# wsl --shutdown from powershell
+# check ps -p 1 -o comm=   = init or bash
+
+# Undo user group addition
+# sudo gpasswd -d <username> <group>

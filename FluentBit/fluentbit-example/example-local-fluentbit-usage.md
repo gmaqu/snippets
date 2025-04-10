@@ -1,54 +1,28 @@
 # Debugging fluent bit configurations locally
 
-# Dataplane Kubelet (multiline klog format)
+## KLOG format on Kubelet (K8 component not supporting json)
 
-## tail plugin locally
-```
-docker run --rm -it --name fluentbit \                                                                         ─╯
-        -v ${PWD}/fluentbit-example/kubelet-fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf \
-        -v ${PWD}/fluentbit-example/parsers.conf:/fluent-bit/etc/parsers_custom.conf \
-        -v ${PWD}/fluentbit-example/klog-sample.log:/var/log/containers/klog-sample.log \
-        fluent/fluent-bit:3.2.4-debug \
-        /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
-```
+### KLOG: Custom LUA script for merging logs from systemd services
 
-## systemd
-### 1. Query setup for log file location
-``` shell
-# Locally a KIND container (kubernetes in docker) can be used to emulate K8
-kind create cluster --name test-cluster
-# Kubelet process runs on this container, writing binary logs stored by the journal process
-docker exec -it b5615b3aa01d sh -c "ps aux | grep kubelet"
-docker exec -it b5615b3aa01d sh -c "journalctl -u kubelet --no-pager"
-# Binary logs are temporarily stored in memory on the container
-docker exec -it test-cluster-control-plane sh -c "journalctl --disk-usage && ls var/log/journal"
-```
-### 2. Exposing Journald Logs from Kind to Host
+Context: Need to support the klog multiline format of logs. The kubelet binary runs on the EC2 node registered with EKS. That way kubelet has access to workload pods and can report on status, writing logs to the journald process on the node. This is a systemd process and so the input for the fluent bit configuration is systemd. A filter can be configured on this input to go through a multiline parser, it cannot be applied directly on the input.
 
-``` yaml
-kind: Cluster
-apiVersion: kind.x-k8s.io/v1alpha4
-name: test-cluster
-nodes:
-  - role: control-plane
-    extraMounts:
-      - hostPath: /run/log/journal
-        containerPath: /run/log/journal
-```
+Preliminary Steps:
+
+1. Start a custom service that logs intermittent logs to journald (see /fluentbit-example/setup-fb-test-service)
+2. Run fluent bit container with desired configuration, mounting hosts journal files
 
 ``` shell
-kind delete cluster --name test-cluster
-kind create cluster --config fluentbit-example/kind-cluster.yaml --name test-cluster
-```
-### Verify logs are available on host
-
-```
-sudo journalctl --directory=/run/log/kind-journal --no-pager -u kubelet
-```
-### Start Fluent Bit pod with access to Journald
-
-```
-
+docker run --rm -it --name fluentbit \
+  -v ${PWD}/fluentbit-example/kubelet-fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf \
+  -v ${PWD}/fluentbit-example/parsers.conf:/fluent-bit/etc/parsers_custom.conf \
+  -v ${PWD}/fluentbit-example/klog-sample.log:/var/log/containers/klog-sample.log \
+  -v ${PWD}/fluentbit-example/klog_multiline_merge.lua:/fluent-bit/etc/klog_multiline_merge.lua \
+  -v /var/log/journal:/var/log/journal:ro \
+  -v /run/log/journal:/run/log/journal:ro \
+  -v /etc/machine-id:/etc/machine-id:ro \
+  -e FLUENT_BIT_SYSTEMD_DB=/tmp/fluentbit.db \
+  fluent/fluent-bit:3.2.4-debug \
+  /fluent-bit/bin/fluent-bit -c /fluent-bit/etc/fluent-bit.conf
 ```
 
 ## GitLab

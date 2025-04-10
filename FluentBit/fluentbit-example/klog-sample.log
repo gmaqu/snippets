@@ -1,3 +1,7 @@
-E0306 15:18:01.699897    1239 nestedpendingoperations.go:348] Some type of operation for a volumeName:k8.io/abc/123 podName: 000-111-222$\"
-Some other new line
-Another new line
+E0306 15:18:01.699897    1239 nestedpendingoperations.go:348] Operation 1
+more info for 1
+output for 1
+I0304 10:33:57.808292    1701 reconciler_common.go:162] Operation 2
+add on to 2
+add one more
+E0304 10:33:57.808292    1701 reconciler_common.go:162] Operation 3
