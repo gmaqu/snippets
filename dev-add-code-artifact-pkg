@@ -1,0 +1,9 @@
+#!/bin/bash
+
+  aws codeartifact associate-external-connection --domain $1 --repository $2 --external-connection public:npmjs
+  npm install $3
+  npm pack $3
+  tar -xzf $3
+  cd package 
+  npm publish --registry=<codeArtReg>
+  
