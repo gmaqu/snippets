@@ -1,0 +1,28 @@
+#!/bin/bash
+
+function validate_input() {
+  declare -a REQUIRED_INPUTS=(
+  GITLAB_HOST
+  PROJECT_ID
+  TOKEN
+)
+  for input in "${REQUIRED_INPUTS[@]}"; do
+    if [ -z "${!input}" ]; then
+      echo "$input is not declared"
+    fi
+  done
+}
+
+function main () {
+  API="https://${GITLAB_HOST}/api/v4/projects/${PROJECT_ID}"
+  # Get failed pipelines
+  FAILED_PIPELINES=$(curl --silent --header "PRIVATE-TOKEN: ${TOKEN}" "${API}/pipelines?status=failed" | jq -r '.[].id')
+  # Delete each failed pipeline
+  for PIPELINE_ID in $FAILED_PIPELINES; do
+    curl --request DELETE --header "PRIVATE-TOKEN: ${TOKEN}" "${API}/pipelines/${PIPELINE_ID}"
+    echo "Deleted pipeline ${PIPELINE_ID}"
+  done
+}
+
+validate_input 
+main
