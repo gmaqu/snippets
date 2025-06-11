@@ -1,0 +1,29 @@
+# Generate private key for CA
+openssl genrsa -out ca.key 2048
+
+# Create a self-signed certificate for the CA
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -out ca.pem -subj "/CN=MyTestIoTCA"
+
+# Register CA with AWS
+
+# Generate private key for the device
+openssl genrsa -out device.key 2048
+
+# Create a certificate signing request (CSR)
+openssl req -new -key device.key -out device.csr -subj "/CN=device123"
+
+# Use your CA to sign the CSR, creating the device cert
+openssl x509 -req -in device.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out device.pem -days 365
+
+# Use a TLS-aware MQTT client like mosquitto_pub or AWS IoT SDK.
+mosquitto_pub \
+  -h <your-iot-endpoint>.iot.<region>.amazonaws.com \
+  -p 8883 \
+  --cafile AmazonRootCA1.pem \
+  --cert device.pem \
+  --key device.key \
+  -t "test/topic" \
+  -m "Hello from device123"
+
+
+  # Profit: AWS knows the device cert is legit, it's signed by a CA it knows and trusts
