@@ -1,0 +1,15 @@
+# PRE-REQ: jq installed & AWS CLI authenticated with permissions to view IAM roles/permissions
+# Find an appropriate role to use in a specific AWS account i.e. it has relevant permissions 
+
+
+for role in $(aws iam list-roles --query "Roles[].RoleName" --output text); do
+  echo "Checking role: $role"
+  aws iam list-attached-role-policies --role-name "$role" --query "AttachedPolicies[].PolicyArn" --output text | while read policy; do
+    aws iam get-policy-version \
+      --policy-arn "$policy" \
+      --version-id $(aws iam get-policy --policy-arn "$policy" --query "Policy.DefaultVersionId" --output text) \
+      --query "PolicyVersion.Document.Statement[]" --output json | \
+      jq '.[].Action' | grep -E 'ecr:(PutImage|GetAuthorizationToken|UploadLayerPart|CompleteLayerUpload)' && \
+      echo "✅ Role '$role' has relevant ECR permissions via $policy"
+  done
+done
