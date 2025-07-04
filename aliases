@@ -1,6 +1,7 @@
 # cat ~/.aliases 
 # CTRL+r for recorded bash_history for recent command search
 
+alias gca='git commit --amend'
 alias m='path to script'
 alias gpsn='git push --set-upstream origin fix/remove-checkstyle'
 alias cleanup='gbr -D $(git branch --no-color | grep -E "fix|feature")'
