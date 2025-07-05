@@ -1,0 +1,14 @@
+#!/bin/bash
+
+REGION=eu-west-2
+ACCOUNT_ID=123
+aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+
+LOCALREPO=localhost:5000
+REPO=some-repo
+docker tag $LOCALREPO/$REPO:$DOCKER_TAG $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO:$DOCKER_TAG
+docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO:$DOCKER_TAG
+
+REPO=some-repo-tests
+docker tag $LOCALREPO/$REPO:$DOCKER_TAG $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO:$DOCKER_TAG
+docker push $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com/$REPO:$DOCKER_TAG
