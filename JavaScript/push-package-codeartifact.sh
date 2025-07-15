@@ -10,7 +10,7 @@ aws codeartifact login \
   --repository $CODE_ARTIFACT_PACKAGE_REPOSITORY
 
 # 3. Download .tgz locally 
-npm pack axios-retry --registry https://registry.npmjs.org/
+npm pack axios-retry@4.5.0 --registry https://registry.npmjs.org/
 
 # 4. Extract .tgz into tmp file 
 # May need to disable some script stages in package.json, e.g. prepare for axios-retry
