@@ -1,0 +1,43 @@
+module.exports = {
+  'env': {
+    'node': true,
+    'es2021': true
+  },
+  'extends': [
+    'eslint:recommended'
+  ],
+  'parserOptions': {
+    'ecmaVersion': 'latest'
+  },
+  'rules': {
+    'brace-style': ['error', '1tbs'],
+    'camelcase': ['error'],
+    'indent': [ 'warn', 2, {
+      'SwitchCase': 1,
+      'offsetTernaryExpressions': true,
+      'MemberExpression': 'off',
+      'ignoredNodes': ['ConditionalExpression']
+    }],
+    'linebreak-style': [ 'error', 'unix' ],
+    'quotes': ['error', 'single'],
+    'semi': [ 'error', 'always' ],
+    'comma-dangle': ['warn', 'only-multiline'],
+    'max-len': ['warn', 150],
+    'object-curly-spacing': ['warn', 'always'],
+    'operator-linebreak': ['warn', 'after', {
+      'overrides': {
+        '?': 'before',
+        ':': 'before'
+      }
+    }]
+  },
+  'overrides': [{
+    'files': [ '*.test.js', 'test/*.js' ],
+    'env': {
+      'jest': true
+    },
+    'globals': {
+      'props': 'readonly'
+    }
+  }]
+};
