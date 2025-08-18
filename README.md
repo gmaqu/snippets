@@ -1,1 +1,1 @@
-# snippets
+# A bit of everything really

@@ -12,6 +12,7 @@ module.exports = {
   // E.g: test -> Test
   capitaliseFirstLetter: (s) => s.charAt(0).toUpperCase() + s.slice(1),
   // E.g remove-hyphens-please -> removeallhyphensplease
-  removeHyphens: (s) => s.replaceAll('-', '')
-  snakeCaseToCamelCase: (s) => s.toLowerCase().replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+  removeHyphens: (s) => s.replaceAll('-', ''),
+  // E.g snake_case_to_camel_case -> snakeCaseToCamelCase
+  snakeCaseToCamelCase: (s) => s.toLowerCase().replace(/_([a-z])/g, (_, letter) => letter.toUpperCase())
 };
