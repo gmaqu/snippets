@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Script to publish ECR images to some repo
+
 REGION=eu-west-2
 ACCOUNT_ID=123
 aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com

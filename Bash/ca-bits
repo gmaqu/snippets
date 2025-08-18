@@ -26,4 +26,4 @@ mosquitto_pub \
   -m "Hello from device123"
 
 
-  # Profit: AWS knows the device cert is legit, it's signed by a CA it knows and trusts
+  # Profit: AWS knows the device cert is legitimate, it's signed by a CA it knows and trusts
