@@ -14,9 +14,9 @@ alias ca='git commit --amend --author="... <...@x.com>" --no-edit'
 alias gplf='git pull --ff-only'
 alias grfb='git checkout main && git branch --no-abbrev --no-color --no-column | grep -v main | xargs git branch -D'
 
-
-alias .l='source ~/.aliases'
-alias .s='alias -L >~/.aliases && alias -L -s >>~/.aliases && alias -L -g >>~/.aliases'
+alias please='sudo !!'
+alias l='source ~/.aliases'
+alias s='alias -L >~/.aliases && alias -L -s >>~/.aliases && alias -L -g >>~/.aliases'
 alias g=git
 alias h=helm
 alias k=kubectl
