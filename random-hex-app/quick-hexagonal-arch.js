@@ -1,3 +1,7 @@
+
+// Model the port after the external entity
+
+
 /** =========================================================================
  Hexagonal Architecture / Ports & Adapters:
 
