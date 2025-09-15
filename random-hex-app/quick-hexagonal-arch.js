@@ -1,5 +1,6 @@
 
 // Model the port after the external entity
+// Use collective domain terminology for collective understanding
 
 
 /** =========================================================================
