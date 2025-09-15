@@ -10,7 +10,7 @@
 | Concept          | Pattern Example                                                                 |
 | ---------------- | ------------------------------------------------------------------------------- |
 | Inbound Port     | `<Verb><Entity>`                    → `ProcessThings`                           |
-| Outbound Port    | `<Entity><Action>` or `<Intent>`    → `ThingFetcher`, `ThingProcessor`          |
+| Outbound Port    | `<Entity><Action>` or `<DOMAIN Intent>`    → `ThingFetcher`, `ThingProcessor`          |
 | Use Case / Core  | `<Verb><Entity>Service`             → `ProcessThingsService`                    |
 | Inbound Adapter  | `<Mechanism><Entity>Handler`        → `LambdaProcessThingsHandler`             |
 | Outbound Adapter | `<Mechanism><Entity><Adapter>`      → `HttpThingFetcherAdapter`                 |
