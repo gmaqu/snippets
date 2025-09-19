@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "typeRoots": [
+      "./node_modules/@types",
+      "jest"
+    ]
+  },
+  //"include": ["src/**/*", "test", "jest.config.js"],
+  //"exclude": ["node_modules", "**/node_modules/**", "dist", "build"]
+}
