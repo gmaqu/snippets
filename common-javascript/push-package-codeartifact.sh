@@ -19,4 +19,4 @@ mkdir tmp && tar -xzf axios-4.5.0.tgz -C tmp && cd tmp/package
 vim package.json # remove prepare script
  
 # 5. Publish to CodeArtifact 
-npm publish --ignore-scripts --registry=$_CODE_ARTIFACT_REPOSITORY
+npm publish --ignore-scripts --registry=$CODE_ARTIFACT_REPOSITORY
