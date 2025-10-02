@@ -12,9 +12,11 @@ aws codeartifact login \
 # 3. Download .tgz locally 
 npm pack axios@4.5.0 --registry https://registry.npmjs.org/
 
-# 4. Extract .tgz into tmp file 
-# May need to disable some script stages in package.json, e.g. prepare for axios
+# 4. Extract .tgz into tmp file
 mkdir tmp && tar -xzf axios-4.5.0.tgz -C tmp && cd tmp/package
+
+# (4.1) SOME packages may need to disable certain script stages in package.json, e.g. for axios
 vim package.json # remove prepare script
-  
+ 
+# 5. Publish to CodeArtifact 
 npm publish --ignore-scripts --registry=$_CODE_ARTIFACT_REPOSITORY
