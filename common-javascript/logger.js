@@ -1,6 +1,8 @@
 //@ts-check
 
-const levels = { error: 0, warn: 1, info: 2, debug: 3, trace: 4 };
+const config = require('./config');
+
+const levels = /**@type {any}*/ ({ error: 0, warn: 1, info: 2, debug: 3 });
 
 class Logger {
   constructor(level = 'info') {
@@ -15,7 +17,7 @@ class Logger {
   }
 
   /**
-   * @param {string} level
+   * @param {'debug'|'info'|'warn'|'error'} level
    * @param {string[]} args
    */
   log(level, ...args) {
@@ -48,13 +50,7 @@ class Logger {
   debug(...args) {
     this.log('debug', ...args);
   }
-  /**
-   * @param {string[]} args
-   */
-  trace(...args) {
-    this.log('trace', ...args);
-  }
 }
 
-module.exports = new Logger(process.env.LOG_LEVEL || 'info');
+module.exports = new Logger(config.lambdaLogLevel || 'info');
 
