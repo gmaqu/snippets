@@ -8,8 +8,10 @@ const {
   someEvent
 } = require('../../../../sample');
 
-beforeEach(() => {
+afterEach(() => {
+  jest.resetModules();
   jest.clearAllMocks();
+  jest.restoreAllMocks();
 });
 
 describe('Input event validation is configured correctly for', () => {

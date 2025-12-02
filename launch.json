@@ -15,7 +15,14 @@
       "name": "Jest: Current File (pick lambda)",
       "program": "${workspaceFolder}/lambdas/${input:lambda}/node_modules/jest/bin/jest.js",
       "args": ["${file}"],
-      "cwd": "${workspaceFolder}/lambdas/${input:lambda}"
+      "cwd": "${workspaceFolder}/lambdas/${input:lambda}",
+      "envFile": "${workspaceFolder}/.env.local",
+      // For profiling:
+      // "runtimeArgs": [
+      //   "--cpu-prof",
+      //   "${workspaceFolder}/lambdas/${input:lambda}/node_modules/jest/bin/jest.js",
+      //   "--runInBand"
+      // ]
     }
   ]
 }
