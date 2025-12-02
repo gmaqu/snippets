@@ -1,0 +1,13 @@
+#!/bin/bash 
+
+VERSION=${1}
+
+
+curl -LO "https://corretto.aws/downloads/latest/amazon-corretto-${VERSION}-x64-linux-jdk.deb"
+sudo dpkg --install "amazon-corretto-${VERSION}-x64-linux-jdk.deb"
+sudo update-alternatives --config java
+java -version
+
+echo 'export JAVA_HOME=/usr/lib/jvm/java-${VERSION}-amazon-corretto' >> ~/.zshrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
+source ~/.zshrc

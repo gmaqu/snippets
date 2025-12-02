@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -ex
+
+# Colours for echo
+RED='\033[0;31m'
+NC='\033[0m'
+
+print_help() {
+  cat <<'EOF'
+  Update the version of Java used on a developers machine.
+  
+  Options:
+    -v, --version         The version to set.
+    -h, --help            Show this help message.
+  
+  Behaviour:
+    • The script downloads the provided version of the Amazon Corretto JDK.
+    • Configures the version of the JDK to the provided version.
+    • Updates JAVA_HOME and PATH.
+    
+  Examples:
+    local-update-java-version -v 25
+EOF
+}
+
+# if [ -z "${1}" ]; then
+#   print_help
+#   exit 0
+# fi 
+
+# while [ -n "${1}" ]; do
+#   case "$1" in
+#     -v|--version)
+#         JAVA_VERSION="${1}"
+#         shift
+#         ;;
+#     -h|--help)
+#         print_help
+#         exit 0
+#         ;;
+#     *)
+#         echo "Unknown option: $1"
+#         print_help
+#         exit 1
+#         ;;
+#   esac
+#done
+
+
+curl -LO https://corretto.aws/downloads/latest/amazon-corretto-25-x64-linux-jdk.tar.gz
+sudo tar --directory=/usr/lib/jvm -xvf amazon-corretto-25-x64-linux-jdk.tar.gz
+sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/amazon-corretto-25.0.1.9.1-linux-x64 1
+sudo update-alternatives --config java
+echo 'export JAVA_HOME=/usr/lib/jvm/amazon-corretto-25.0.1.9.1-linux-x64/' >> ~/.zshrc
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
+source ~/.zshrc
+java -version
