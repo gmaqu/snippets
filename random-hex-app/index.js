@@ -1,8 +1,8 @@
 const FizzService = require('./app/fizzService');
-const httpFizzRepository = require('./adapters/httpFizzRepository');
+const HttpFizzRepository = require('./adapters/httpFizzRepository');
 
 const baseUrl = process.env.FIZZ_API_BASE_URL;
-const fizzRepo = httpFizzRepository(baseUrl);
+const fizzRepo = HttpFizzRepository(baseUrl);
 const fizzService = new FizzService(fizzRepo);
 
 async function handler(event) {
