@@ -1,0 +1,20 @@
+{
+    // Theme Settings
+    "workbench.colorTheme": "GitHub Dark Dimmed",
+    "editor.tokenColorCustomizations": {
+        "[Dracula Theme Soft]": {
+            "comments": "#00ff1a"
+        },
+        "[GitHub Dark Dimmed]": {
+            "comments": "#ffffff",
+            "variables": "#db58a7"
+        }
+    },
+
+    "update.mode": "none",
+    "update.enableWindowsBackgroundUpdates": false,
+    "docker.extension.enableComposeLanguageServer": false,
+    "window.newWindowProfile": "newan",
+    "editor.minimap.enabled": false,
+    "workbench.secondarySideBar.showLabels": false
+}
